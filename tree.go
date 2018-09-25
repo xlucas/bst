@@ -5,11 +5,11 @@ package bst
 // provided comparator.
 type Tree struct {
 	root *Node
-	comp Comparator
+	comp KeyComparator
 }
 
-// NewTree creates a new Binary Search Tree with c as the key Comparator.
-func NewTree(c Comparator) *Tree {
+// NewTree creates a new Binary Search Tree with a key comparator.
+func NewTree(c KeyComparator) *Tree {
 	return &Tree{
 		comp: c,
 	}
@@ -58,7 +58,7 @@ func (t *Tree) deleteNodeWithChild(child, parent *Node) {
 
 // deleteNodeWithChildren is used to remove a node with two children. First
 // we find the in-order successor of the node in its right subtree. Then we copy
-// its key and value in place of the node. If this sucessor has a descendant,
+// its key and value in place of the node. If this successor has a descendant,
 // it's necessarily on its right. In that case we update the refrence on his
 // parent to point to its former (right) child.
 func (t *Tree) deleteNodeWithChildren(child, parent *Node) {
@@ -107,9 +107,9 @@ func (t *Tree) Insert(key, val interface{}) {
 func (t *Tree) insert(node *Node, k, v interface{}) {
 	if t.comp.Less(k, node.key) {
 		t.insertLeft(node, k, v)
-		return
+	} else {
+		t.insertRight(node, k, v)
 	}
-	t.insertRight(node, k, v)
 }
 
 // insertLeft is used to insert a value into the left branch of a subtree.
